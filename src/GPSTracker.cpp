@@ -1,3 +1,4 @@
+#include <ArduinoJson.h> // Include ArduinoJson library
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 #include <TinyGPS++.h>
@@ -32,10 +33,23 @@ void processGPS()
   {
     if (gps.location.isValid())
     {
-      char gpsData[128];
-      snprintf(gpsData, sizeof(gpsData), "Latitude: %f, Longitude: %f", gps.location.lat(), gps.location.lng());
-      Serial.println(gpsData);
-      client.publish("cat-gps", gpsData);
+      // Create a JSON object
+      StaticJsonDocument<200> jsonDoc;
+
+      // Populate the JSON object
+      jsonDoc["id"] = "acing";
+      jsonDoc["type"] = "gps";
+      JsonObject data = jsonDoc.createNestedObject("data");
+      data["lat"] = gps.location.lat();
+      data["lng"] = gps.location.lng();
+      
+
+      // Serialize the JSON object to a string
+      char jsonString[200];
+      serializeJson(jsonDoc, jsonString);
+
+      // Publish the JSON string to the MQTT topic 'cat-gps'
+      client.publish("cat-gps", jsonString);
     }
     else
     {
