@@ -9,7 +9,7 @@
 TinyGPSPlus gps;
 
 // SoftwareSerial for GPS module
-SoftwareSerial gpsSerial(D1, D2); // RX, TX
+SoftwareSerial gpsSerial(D1, D2); // TX, RX
 
 // Timer for GPS data processing
 unsigned long lastGpsUpdate = 0;
@@ -42,7 +42,6 @@ void processGPS()
       JsonObject data = jsonDoc.createNestedObject("data");
       data["lat"] = gps.location.lat();
       data["lng"] = gps.location.lng();
-      
 
       // Serialize the JSON object to a string
       char jsonString[200];
