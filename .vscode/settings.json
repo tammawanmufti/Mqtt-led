@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "tinygsmcommon.h": "c",
+    "client.h": "c",
+    "*.tpp": "cpp"
+  }
+}

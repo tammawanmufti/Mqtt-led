@@ -1,9 +1,11 @@
 #ifndef SIM_SETUP_H
 #define SIM_SETUP_H
 
-#include "SIM800L.h"
+#define TINY_GSM_MODEM_SIM800
 
-extern SIM800L sim800l;
+#include <TinyGsmClient.h>
+
+extern TinyGsm modem;
 
 void setupSIM800L();
 

@@ -1,25 +1,31 @@
-#include <Arduino.h>
-#include "SimSetup.h"
 
-SIM800L sim800l(D5, D6); // RX, TX
+#define TINY_GSM_MODEM_SIM800
+#define MODEM_RX D5
+#define MODEM_TX D6
 
-void setupSIM800L() {
-  sim800l.begin(9600);
+#include <SoftwareSerial.h>
+#include <TinyGsmClient.h>
 
-  if (sim800l.init()) {
-    Serial.println("SIM800L Initialized");
+SoftwareSerial serialModem(MODEM_RX, MODEM_TX);
 
-    const char* apn = ""; 
-    const char* user = "";
-    const char* pass = "";
+TinyGsm modem(serialModem);
 
-    if (sim800l.connectGPRS(apn, user, pass)) {
-      Serial.println("GPRS Connected");
+const char apn[] = "internet";
+const char user[] = "";
+const char pass[] = "";
 
-    } else {
-      Serial.println("Failed to connect GPRS");
-    }
-  } else {
-    Serial.println("Failed to initialize SIM800L");
+void setupSIM800L()
+{
+  serialModem.begin(9600);
+  Serial.println("Initializing modem...");
+  modem.restart();
+
+  Serial.print("Waiting for network...");
+  if (!modem.waitForNetwork())
+  {
+
+    Serial.println("gprs connection failed");
+    return;
   }
+  Serial.println("Network connected");
 }
