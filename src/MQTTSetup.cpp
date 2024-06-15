@@ -20,17 +20,6 @@ void callback(char *topic, byte *payload, unsigned int length)
     Serial.print((char)payload[i]);
   }
   Serial.println();
-
-  if ((char)payload[0] == '1')
-  {
-    // Hidupkan
-    digitalWrite(LED_BUILTIN, LOW);
-  }
-  if ((char)payload[0] == '0')
-  {
-    // Matikan
-    digitalWrite(LED_BUILTIN, HIGH);
-  }
 }
 
 void reconnect()
@@ -38,7 +27,7 @@ void reconnect()
   while (!client.connected())
   {
     Serial.println("Attempting MQTT connection...");
-    if (client.connect("Acing-1"))
+    if (client.connect("Acing-2"))
     {
       Serial.println("connected");
       client.publish("cat-gps", "hello world");

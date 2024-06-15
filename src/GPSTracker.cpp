@@ -37,7 +37,7 @@ void processGPS()
       StaticJsonDocument<200> jsonDoc;
 
       // Populate the JSON object
-      jsonDoc["id"] = "acing";
+      jsonDoc["id"] = "meong";
       jsonDoc["type"] = "gps";
       JsonObject data = jsonDoc.createNestedObject("data");
       data["lat"] = gps.location.lat();
@@ -49,10 +49,19 @@ void processGPS()
 
       // Publish the JSON string to the MQTT topic 'cat-gps'
       client.publish("cat-gps", jsonString);
+      digitalWrite(LED_BUILTIN, HIGH);
     }
     else
     {
+      digitalWrite(LED_BUILTIN, LOW);
+      delay(100);
+      digitalWrite(LED_BUILTIN, HIGH);
+      delay(100);
       Serial.println("Waiting for valid GPS data...");
+      digitalWrite(LED_BUILTIN, LOW);
+      delay(100);
+      digitalWrite(LED_BUILTIN, HIGH);
+      delay(100);
     }
 
     lastGpsUpdate = millis();

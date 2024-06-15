@@ -1,6 +1,9 @@
 #include <ESP8266WiFi.h>
 #include "WifiSetup.h"
 
+// const char *ssid = "Oppo";
+// const char *password = "Evo12345";
+
 const char *ssid = "Avenger";
 const char *password = "123aka321";
 
@@ -14,7 +17,11 @@ void setupWifi()
 
   while (WiFi.status() != WL_CONNECTED)
   {
-    delay(500);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(200);
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(300);
+
     Serial.print(".");
   }
 
