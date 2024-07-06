@@ -4,6 +4,7 @@
 #include <TinyGPS++.h>
 #include "GPSTracker.h"
 #include "MQTTSetup.h"
+#include "MQTTSetup.h"
 
 // Create an instance of the TinyGPS++ object
 TinyGPSPlus gps;
@@ -13,12 +14,13 @@ SoftwareSerial gpsSerial(D1, D2); // TX, RX
 
 // Timer for GPS data processing
 unsigned long lastGpsUpdate = 0;
-const unsigned long gpsUpdateInterval = 1000; // 1 second
+const unsigned long gpsUpdateInterval = 20000; // 1 second
 
 void setupGPS()
 {
   gpsSerial.begin(9600); // Initialize GPS serial port
   Serial.println("GPS Module initialized.");
+  Serial.println(device_id);
 }
 
 void processGPS()
@@ -37,7 +39,7 @@ void processGPS()
       StaticJsonDocument<200> jsonDoc;
 
       // Populate the JSON object
-      jsonDoc["id"] = "meong";
+      jsonDoc["id"] = device_id;
       jsonDoc["type"] = "gps";
       JsonObject data = jsonDoc.createNestedObject("data");
       data["lat"] = gps.location.lat();

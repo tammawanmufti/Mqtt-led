@@ -6,7 +6,6 @@
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-const char *device_id = "Acing";
 const char *mqtt_server = "broker.mqtt-dashboard.com";
 const int mqtt_port = 1883;
 

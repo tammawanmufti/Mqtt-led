@@ -4,6 +4,8 @@
 #include "MQTTSetup.h"
 #include "SimSetup.h"
 
+char* device_id = "meong";
+
 void setup()
 {
   pinMode(LED_BUILTIN, OUTPUT);
