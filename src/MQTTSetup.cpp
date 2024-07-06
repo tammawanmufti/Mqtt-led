@@ -6,6 +6,7 @@
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+const char *device_id = "Acing";
 const char *mqtt_server = "broker.mqtt-dashboard.com";
 const int mqtt_port = 1883;
 
@@ -27,11 +28,25 @@ void reconnect()
   while (!client.connected())
   {
     Serial.println("Attempting MQTT connection...");
-    if (client.connect("Acing-2"))
+    if (client.connect(device_id))
     {
       Serial.println("connected");
-      client.publish("cat-gps", "hello world");
-      client.subscribe("cat-gps");
+
+      int msgLength = sniprintf(nullptr, 0, "{\"id\":\"%s\",\"type\":\"ack\"}", device_id);
+
+      char *msg = (char *)malloc(msgLength + 1);
+
+      if (msg != nullptr)
+      {
+        sniprintf(msg, msgLength + 1, "{\"id\":\"%s\",\"type\":\"ack\"}", device_id);
+        client.publish("cat-gps", msg);
+        free(msg);
+      }
+      else
+      {
+        Serial.println("Memory allocation failed");
+        return;
+      }
     }
     else
     {
