@@ -4,8 +4,8 @@
 // const char *ssid = "Oppo";
 // const char *password = "Evo12345";
 
-const char *ssid = "Avenger";
-const char *password = "123aka321";
+const char *ssid = "Haihai";
+const char *password = "12341234";
 
 void setupWifi()
 {

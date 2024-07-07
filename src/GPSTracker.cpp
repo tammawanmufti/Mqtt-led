@@ -33,25 +33,22 @@ void processGPS()
   // Check if it's time to update GPS data
   if (millis() - lastGpsUpdate >= gpsUpdateInterval)
   {
-    if (gps.location.isValid())
-    {
-      // Create a JSON object
-      StaticJsonDocument<200> jsonDoc;
+    StaticJsonDocument<200> jsonDoc;
+    jsonDoc["id"] = device_id;
+    jsonDoc["type"] = "gps";
+    char jsonString[200];
 
-      // Populate the JSON object
-      jsonDoc["id"] = device_id;
-      jsonDoc["type"] = "gps";
+    if (gps.location.isValid())
+
+    {
+      jsonDoc["message"] = "GPS data valid.";
+      jsonDoc["status"] = true;
       JsonObject data = jsonDoc.createNestedObject("data");
       data["lat"] = gps.location.lat();
       data["lng"] = gps.location.lng();
 
       // Serialize the JSON object to a string
-      char jsonString[200];
       serializeJson(jsonDoc, jsonString);
-
-      // Publish the JSON string to the MQTT topic 'cat-gps'
-      client.publish("cat-gps", jsonString);
-      digitalWrite(LED_BUILTIN, HIGH);
     }
     else
     {
@@ -60,11 +57,17 @@ void processGPS()
       digitalWrite(LED_BUILTIN, HIGH);
       delay(100);
       Serial.println("Waiting for valid GPS data...");
+      jsonDoc["message"] = "GPS data invalid.";
+      jsonDoc["status"] = false;
+      JsonObject data = jsonDoc.createNestedObject("data");
+      serializeJson(jsonDoc, jsonString);
       digitalWrite(LED_BUILTIN, LOW);
       delay(100);
       digitalWrite(LED_BUILTIN, HIGH);
       delay(100);
     }
+    client.publish("cat-gps", jsonString);
+    digitalWrite(LED_BUILTIN, HIGH);
 
     lastGpsUpdate = millis();
   }
